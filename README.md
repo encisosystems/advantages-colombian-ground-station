@@ -7,4 +7,4 @@ Furthermore, the station provides a symmetric tracking geometry that yields a **
 **Key Words:** Equatorial Ground Stations; Andean High-Altitude Topography; Ka-Band Rain Fade Mitigation; Doppler Shift Symmetry; Multi-Orbit (LEO/MEO/GEO) Tracking; Latency Reduction; Computational Reproducibility.
 
 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
