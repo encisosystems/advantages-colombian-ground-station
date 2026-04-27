@@ -4,7 +4,7 @@
 
 Furthermore, the station provides a symmetric tracking geometry that yields a **27% smoother Doppler rate** ($\dot{f}_D$), significantly reducing the complexity of ground-based digital signal processing. Despite high tropical precipitation, we prove that the **2,600-meter altitude** successfully mitigates rain fade, maintaining a robust **16.9 dB link margin** in the Ka-band at 99.9% availability. These findings confirm that a Colombian node can slash system latency by **50%** for Sun-Synchronous Orbits (SSO), reducing wait times from 100 to 50 minutes. To support open science and ensure independent verification, the complete simulation framework and visualization suite used in this study are provided in a public, open-access repository. This study concludes that an integrated equatorial node is essential for closing the global coverage gap and providing a high-throughput egress point for next-generation deep space tracking and multi-orbit telemetry.
 
-**Key Words:** Equatorial Ground Stations; Andean High-Altitude Topography; Ka-Band Rain Fade Mitigation; Doppler Shift Symmetry; Multi-Orbit (LEO/MEO/GEO) Tracking; Latency Reduction; Computational Reproducibility.
+**Key Words:** Equatorial Ground Stations, Andean High-Altitude Topography, Ka-Band Rain Fade Mitigation, Doppler Shift Symmetry, Multi-Orbit (LEO/MEO/GEO) Tracking, Latency Reduction, Computational Reproducibility.
 
 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
