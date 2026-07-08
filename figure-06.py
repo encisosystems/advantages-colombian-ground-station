@@ -110,23 +110,37 @@ def _detect_passes(visible):
 def compute_python_metrics(sat):
     """
     Compute (mean_pass_s, daily_min, peak_doppler_khz) using Skyfield/SGP4.
-    Range rate is derived via central-difference on the geometric range.
+
+    Pass duration and daily contact time use Skyfield's find_events() for
+    sub-second accuracy at rise/set boundaries.  Doppler is derived via
+    central-difference on the 1-minute geometric-range grid.
     """
+    # ── Precise pass detection via event-finding ───────────────────────
+    t_ev, ev_type = sat.find_events(paipa, _T0, _T1, altitude_degrees=MIN_EL)
+    # ev_type: 0 = rise above mask, 1 = culmination, 2 = set below mask
+
+    pass_durations = []
+    rise_tt = None
+    for ev_t, et in zip(t_ev, ev_type):
+        if et == 0:
+            rise_tt = ev_t.tt                            # Terrestrial Time, days
+        elif et == 2 and rise_tt is not None:
+            pass_durations.append((ev_t.tt - rise_tt) * 86400.0)  # → seconds
+            rise_tt = None
+
+    mean_pass_s = float(np.mean(pass_durations)) if pass_durations else 0.0
+    daily_min   = float(np.sum(pass_durations)) / 60.0 / N_DAYS
+
+    # ── Doppler via range central-difference on 1-minute grid ──────────
     topo           = (sat - paipa).at(_t)
     alt, _az, dist = topo.altaz()
-    el_deg         = alt.degrees
-    visible        = el_deg > MIN_EL
+    visible        = alt.degrees > MIN_EL
     r_km           = dist.km
 
-    passes      = _detect_passes(visible)
-    mean_pass_s = np.mean([(e - s + 1) * 60.0 for s, e in passes]) if passes else 0.0
-    daily_min   = float(np.sum(visible)) / N_DAYS
-
-    # Range rate [km/s] via central differences on 60-second samples
     range_rate_km_s = np.gradient(r_km, 60.0)
     f_D_kHz         = -F0_HZ * range_rate_km_s / C_KM_S / 1e3
 
-    # Extend the pass mask by ±1 step to capture the horizon Doppler peaks
+    # Extend pass mask by ±1 step to capture horizon Doppler peaks
     mask = visible.copy()
     mask[1:]  |= visible[:-1]
     mask[:-1] |= visible[1:]

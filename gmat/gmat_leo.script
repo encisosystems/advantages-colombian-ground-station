@@ -77,7 +77,7 @@ GMAT Paipa.MinimumElevationAngle = 10.0;        % deg - elevation mask
 Create ContactLocator CL;
 GMAT CL.Target               = SC;
 GMAT CL.Observers            = {Paipa};
-GMAT CL.Filename             = 'contacts_leo.txt';
+GMAT CL.Filename             = '/Users/jenciso/development/advantages-colombian-ground-station/gmat/contacts_leo.txt';
 GMAT CL.InputEpochFormat     = 'UTCGregorian';
 GMAT CL.InitialEpoch         = '08 Jul 2026 03:41:05.326';
 GMAT CL.StepSize             = 60;
@@ -95,7 +95,7 @@ GMAT CL.UseEntireInterval    = false;
 %----------------------------------------------------------------------
 Create ReportFile RF;
 GMAT RF.SolverIterations = Current;
-GMAT RF.Filename         = 'rangedata_leo.txt';
+GMAT RF.Filename         = '/Users/jenciso/development/advantages-colombian-ground-station/gmat/rangedata_leo.txt';
 GMAT RF.Precision        = 16;
 GMAT RF.Add              = {SC.UTCGregorian, SC.EarthFixed.X, SC.EarthFixed.Y, SC.EarthFixed.Z, SC.EarthFixed.VX, SC.EarthFixed.VY, SC.EarthFixed.VZ};
 GMAT RF.WriteHeaders     = true;
