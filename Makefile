@@ -1,4 +1,4 @@
-.PHONY: all install figures figure-01 figure-02 figure-03 figure-04 figure-05 simulation clean
+.PHONY: all install figures figure-01 figure-02 figure-03 figure-04 figure-05 figure-06 simulation clean
 
 all: figures
 
@@ -24,8 +24,11 @@ figure-04:
 figure-05:
 	python figure-05.py
 
+figure-06:
+	python figure-06.py
+
 simulation:
 	python simulation.py
 
 clean:
-	rm -f figure-01.png figure-02.png figure-03.png figure-04.png figure-05.png simulation.png
+	rm -f figure-01.png figure-02.png figure-03.png figure-04.png figure-05.png figure-06.png simulation.png

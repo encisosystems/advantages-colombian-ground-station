@@ -1,0 +1,110 @@
+%General Mission Analysis Tool (GMAT) Script
+%Filename : gmat_sso.script
+%Purpose  : Cross-platform validation - Landsat 8-equivalent SSO orbit
+%           Python/Skyfield vs NASA GMAT (JGM-3 / Prince-Dormand 7(8))
+%Orbit    : LANDSAT 8 - TLE data/tle_sso.txt
+%           SMA ~ 7079 km (~701 km alt), i = 98.2292deg
+%Window   : 2026 Jul 08 04:12:08.258  ->  2026 Jul 15 04:12:08.258  (7 days)
+%Run from : the gmat/ directory so output files land here alongside this script
+%
+%Outputs  : contacts_sso.txt  - contact-locator access report
+%           rangedata_sso.txt - ECEF state at 1-min intervals (for Doppler)
+%
+%Note on initial conditions:
+%  SMA is derived from the TLE mean motion via Kepler's third law
+%  (mu = 398 600.4418 km^3/s^2). True Anomaly is converted from Mean Anomaly
+%  using the first-order expansion TA ~ MA + 2e*sin(MA).
+%  For improved epoch fidelity, replace the Keplerian state with the
+%  Cartesian (ECI) output of a Skyfield SGP4 propagation at epoch.
+
+%----------------------------------------------------------------------
+%  Spacecraft
+%----------------------------------------------------------------------
+Create Spacecraft SC;
+GMAT SC.DateFormat           = UTCGregorian;
+GMAT SC.Epoch                = '08 Jul 2026 04:12:08.258';
+GMAT SC.CoordinateSystem     = EarthMJ2000Eq;
+GMAT SC.DisplayStateType     = Keplerian;
+GMAT SC.SMA                  = 7079.0;       % km  (from n = 14.57108674 rev/day)
+GMAT SC.ECC                  = 0.0001346;
+GMAT SC.INC                  = 98.2292;      % deg
+GMAT SC.RAAN                 = 259.0602;     % deg
+GMAT SC.AOP                  = 94.5142;      % deg
+GMAT SC.TA                   = 265.61;       % deg (converted from MA = 265.6210 deg)
+
+%----------------------------------------------------------------------
+%  Force Model - JGM-3, 10x10, no drag, no SRP, no relativity
+%----------------------------------------------------------------------
+Create ForceModel FM;
+GMAT FM.CentralBody                  = Earth;
+GMAT FM.PrimaryBodies                = {Earth};
+GMAT FM.Gravity.Earth.Model          = 'JGM3';
+GMAT FM.Gravity.Earth.Degree         = 10;
+GMAT FM.Gravity.Earth.Order          = 10;
+GMAT FM.Drag.AtmosphereModel         = None;
+GMAT FM.SRP                          = Off;
+GMAT FM.RelativisticCorrection       = Off;
+
+%----------------------------------------------------------------------
+%  Propagator - Prince-Dormand 7(8), 60-second max step
+%----------------------------------------------------------------------
+Create Propagator Prop;
+GMAT Prop.FM                  = FM;
+GMAT Prop.Type                = PrinceDormand78;
+GMAT Prop.InitialStepSize     = 60;
+GMAT Prop.Accuracy            = 9.999999999999999e-13;
+GMAT Prop.MinStep             = 0.001;
+GMAT Prop.MaxStep             = 60;
+GMAT Prop.MaxStepAttempts     = 50;
+GMAT Prop.StopIfAccuracyIsViolated = true;
+
+%----------------------------------------------------------------------
+%  Ground Station - Paipa, Colombia (WGS-84)
+%----------------------------------------------------------------------
+Create GroundStation Paipa;
+GMAT Paipa.CentralBody           = Earth;
+GMAT Paipa.StateType             = Spherical;
+GMAT Paipa.HorizonReference      = Ellipsoid;
+GMAT Paipa.Location1             = 5.783333;    % Latitude  deg N
+GMAT Paipa.Location2             = -73.117778;  % Longitude deg E (negative = West)
+GMAT Paipa.Location3             = 2.6;         % Altitude  km
+GMAT Paipa.Id                    = 'Paipa';
+GMAT Paipa.MinimumElevationAngle = 10.0;        % deg - elevation mask
+
+%----------------------------------------------------------------------
+%  Contact Locator
+%----------------------------------------------------------------------
+Create ContactLocator CL;
+GMAT CL.Target               = SC;
+GMAT CL.Observers            = {Paipa};
+GMAT CL.Filename             = 'contacts_sso.txt';
+GMAT CL.InputEpochFormat     = 'UTCGregorian';
+GMAT CL.InitialEpoch         = '08 Jul 2026 04:12:08.258';
+GMAT CL.StepSize             = 60;
+GMAT CL.FinalEpoch           = '15 Jul 2026 04:12:08.258';
+GMAT CL.UseLightTimeDelay    = false;
+GMAT CL.UseStellarAberration = false;
+GMAT CL.WriteReport          = true;
+GMAT CL.RunMode              = Automatic;
+GMAT CL.UseEntireInterval    = false;
+
+%----------------------------------------------------------------------
+%  ReportFile - ECEF state at every propagation step (1-min cadence)
+%  Used by figure-06.py to compute range rate and peak Doppler shift.
+%  Column order: time  X  Y  Z  VX  VY  VZ  (all ECEF / Earth-fixed)
+%----------------------------------------------------------------------
+Create ReportFile RF;
+GMAT RF.SolverIterations = Current;
+GMAT RF.Filename         = 'rangedata_sso.txt';
+GMAT RF.Precision        = 16;
+GMAT RF.Add              = {SC.UTCGregorian, SC.EarthFixed.X, SC.EarthFixed.Y, SC.EarthFixed.Z, SC.EarthFixed.VX, SC.EarthFixed.VY, SC.EarthFixed.VZ};
+GMAT RF.WriteHeaders     = true;
+GMAT RF.LeftJustify      = On;
+GMAT RF.ColumnWidth      = 23;
+GMAT RF.WriteReport      = true;
+
+%----------------------------------------------------------------------
+%  Mission Sequence
+%----------------------------------------------------------------------
+BeginMissionSequence;
+Propagate Prop(SC) {SC.ElapsedDays = 7.0};

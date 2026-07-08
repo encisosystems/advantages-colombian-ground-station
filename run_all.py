@@ -16,6 +16,7 @@ figures = [
     'figure-03.py',
     'figure-04.py',
     'figure-05.py',
+    'figure-06.py',
     'simulation.py',
 ]
 
