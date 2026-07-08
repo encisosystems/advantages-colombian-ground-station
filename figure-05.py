@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -40,6 +46,10 @@ cbar.set_label('S4 Index (Amplitude Scintillation)')
 
 #plt.title('S4 Index Distribution Map: Colombian Andes\nSimulated Solar Maximum Conditions',
 #          fontsize=14, pad=20)
-ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
+# Show labels on left and bottom only — right side is reserved for the colorbar
+gl = ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
+gl.top_labels = False
+gl.right_labels = False
 
+plt.savefig('figure-05.png', dpi=300, bbox_inches='tight')
 plt.show()

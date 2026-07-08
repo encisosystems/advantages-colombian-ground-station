@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import make_interp_spline
@@ -48,5 +54,6 @@ plt.grid(True, linestyle=':', alpha=0.7)
 
 # Adjust layout and display the plot
 plt.tight_layout()
+plt.savefig('figure-02.png', dpi=300, bbox_inches='tight')
 plt.show()
 

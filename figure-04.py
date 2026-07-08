@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -21,16 +27,17 @@ plt.plot(t, equatorial_shift, label='Equatorial Node (0°) - Overhead/Smooth',
 
 # Formatting the plot
 #plt.title('Doppler Shift Complexity (30 GHz Ka-Band Downlink)', fontsize=14)
-plt.xlabel('Time Relative to Maximum Elevation (Seconds)', fontsize=12)
-plt.ylabel('Doppler Frequency Shift (kHz)', fontsize=12)
+plt.xlabel('Time Relative to Maximum Elevation (Seconds)', fontsize=14)
+plt.ylabel('Doppler Frequency Shift (kHz)', fontsize=14)
 plt.axhline(0, color='black', linewidth=0.5)
 plt.axvline(0, color='black', linewidth=0.5)
 plt.grid(True, alpha=0.3)
-plt.legend(fontsize=11)
+plt.legend(fontsize=14)
 
 # Annotating maximums
 plt.annotate('Max 720 kHz', xy=(-250, 680), color='red')
-plt.annotate('Max 650 kHz', xy=(-250, 520), color='blue')
+plt.annotate('Max 650 kHz', xy=(-250, 460), color='blue')
 
 plt.tight_layout()
+plt.savefig('figure-04.png', dpi=300, bbox_inches='tight')
 plt.show()

@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import numpy as np
 import matplotlib.pyplot as plt
 from skyfield.api import Topos, load, EarthSatellite
@@ -51,10 +57,11 @@ if len(pass_indices) > 0:
 
     plt.figure(figsize=(8, 4))
     plt.plot(pass_t.utc_datetime(), pass_alt, color='#1f77b4', linewidth=2)
-    plt.title('Tracking Geometry: Elevation Angle During First Pass', fontsize=12)
-    plt.xlabel('Time (UTC)', fontsize=10)
-    plt.ylabel('Elevation (Degrees)', fontsize=10)
+    plt.title('Tracking Geometry: Elevation Angle During First Pass', fontsize=14)
+    plt.xlabel('Time (UTC)', fontsize=14)
+    plt.ylabel('Elevation (Degrees)', fontsize=14)
     plt.axhline(y=10, color='r', linestyle='--', label='10° Mask Angle')
     plt.legend()
     plt.grid(True, alpha=0.5)
+    plt.savefig('simulation.png', dpi=300, bbox_inches='tight')
     plt.show()

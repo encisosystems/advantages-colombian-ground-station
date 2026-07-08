@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import make_interp_spline
@@ -27,20 +33,20 @@ plt.scatter(frequencies, andean_attenuation, color='dodgerblue', s=50, zorder=5)
 
 # Annotate the specific 30 GHz data points mentioned in the study
 plt.annotate('35.7 dB', xy=(30.0, 35.7), xytext=(28, 38),
-             arrowprops=dict(facecolor='black', arrowstyle='->'), fontsize=10)
+             arrowprops=dict(facecolor='black', arrowstyle='->'), fontsize=14)
 plt.annotate('19.5 dB', xy=(30.0, 19.5), xytext=(31, 16),
-             arrowprops=dict(facecolor='black', arrowstyle='->'), fontsize=10)
+             arrowprops=dict(facecolor='black', arrowstyle='->'), fontsize=14)
 
 # Formatting the chart
 #plt.title('Ka-Band Attenuation Profiles (20-40 GHz)', fontsize=14, fontweight='bold', pad=15)
-plt.xlabel('Transmit Frequency (GHz)', fontsize=12)
-plt.ylabel('Total Atmospheric Attenuation ($L_{atm}$) in dB', fontsize=12)
+plt.xlabel('Transmit Frequency (GHz)', fontsize=14)
+plt.ylabel('Total Atmospheric Attenuation ($L_{atm}$) in dB', fontsize=14)
 plt.xlim(20, 40)
 plt.ylim(0, 60)
 plt.grid(True, linestyle='--', alpha=0.7)
-plt.legend(loc='upper left', fontsize=11, frameon=True, shadow=True)
+plt.legend(loc='upper left', fontsize=14, frameon=True, shadow=True)
 
 # Save the plot as a high-resolution image suitable for a document
 plt.tight_layout()
-plt.savefig('Ka_Band_Attenuation_Profile.png', dpi=300)
+plt.savefig('figure-03.png', dpi=300, bbox_inches='tight')
 plt.show()

@@ -1,3 +1,9 @@
+import matplotlib
+matplotlib.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+})
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -62,7 +68,7 @@ node_circle = Circle((node_loc['lon'], node_loc['lat']), 25, # radius in degrees
 ax.add_patch(node_circle)
 # Label for the node
 ax.text(node_loc['lon'] + 35, node_loc['lat'] + 2, '0° COLOMBIAN NODE\nCOVERAGE FOOTPRINT',
-        fontsize=10, fontweight='bold', va='center', ha='left')
+        fontsize=14, fontweight='bold', va='center', ha='left')
 
 
 # --- Add Ground Tracks ---
@@ -99,7 +105,7 @@ for name, data in station_data.items():
     # Text is anchored to the station icon, not the cross
     text_x, text_y = data['text_offset']
     ax.text(data['lon'] + text_x, data['lat'] + text_y, f"{name.upper()} ({int(abs(data['lat']))}°{ 'N)' if data['lat'] >= 0 else 'S)'}",
-            fontsize=10, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12)
+            fontsize=14, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12)
 
 # Add a specific Colombian Node mark
 # The original node footprint center has a red X which is inside.
@@ -112,20 +118,20 @@ ax.scatter(node_loc['lon'], node_loc['lat'], marker='x', s=150, color='red', lin
 # Title text boxes
 # Text boxes on PlateCarree are easier to place by coordinates
 ax.text(180, 35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
-        fontsize=12, fontweight='bold', ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, fontweight='bold', ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 ax.text(180, -35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
-        fontsize=12, fontweight='bold', ha='right', va='bottom', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, fontweight='bold', ha='right', va='bottom', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(-120, -12, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
-        fontsize=12, fontweight='bold', ha='center', va='bottom')
+        fontsize=14, fontweight='bold', ha='center', va='bottom')
 
 ax.text(-80, -18, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
-        fontsize=10, color='black', ha='center', va='bottom')
+        fontsize=14, color='black', ha='center', va='bottom')
 ax.text(110, -3, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
-        fontsize=10, color='black', ha='center', va='top')
+        fontsize=14, color='black', ha='center', va='top')
 
 ax.text(0, -85, 'POLAR NETWORKS:\nCONTINUOUS VISIBILITY FOR POLAR ORBITS,\nZERO VISIBILITY FOR LOW INCLINATION LEO',
-        fontsize=10, fontweight='bold', ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, fontweight='bold', ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 # Lon/Lat labels
 gl = ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False,
@@ -139,8 +145,8 @@ gl.ylocator = mticker.FixedLocator([-90, -28, -10, 0, 10, 28, 30, 40, 90])
 # Set explicit labels for consistency with image
 gl.xformatter = mticker.FuncFormatter(lambda x, p: f"{int(abs(x))}°{ 'W' if x < 0 else 'E'}" if x !=0 else "0°")
 gl.yformatter = mticker.FuncFormatter(lambda y, p: f"{int(abs(y))}°{ 'N' if y >= 0 else 'S'}")
-gl.xlabel_style = {'size': 9, 'color': 'black'}
-gl.ylabel_style = {'size': 9, 'color': 'black'}
+gl.xlabel_style = {'size': 14, 'color': 'black'}
+gl.ylabel_style = {'size': 14, 'color': 'black'}
 
 
 # --- Add Inset Map for 3D Orbital Plane ---
@@ -155,7 +161,7 @@ inset_ax.fill_between(np.linspace(-180, 180, 100), -28, 28,
 inset_ax.gridlines(linestyle=':', linewidth=0.2) # Corrected line
 # Text for inset
 inset_ax.text(0.5, -0.1, '3D ORBITAL PLANE\n(SIDE VIEW)', transform=inset_ax.transAxes,
-              fontsize=11, fontweight='bold', ha='center', va='top')
+              fontsize=14, fontweight='bold', ha='center', va='top')
 
 
 # --- Add Legend ---
@@ -174,10 +180,11 @@ legend_elements = [
     Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markeredgecolor='red', markersize=10, markeredgewidth=2, linestyle='none', label='Colombian Node')
 ]
 
-ax.legend(handles=legend_elements, loc='lower right', frameon=True, fontsize=10,
-          framealpha=1.0, facecolor='white', edgecolor='black', title_fontsize='large')
+ax.legend(handles=legend_elements, loc='lower right', frameon=True, fontsize=14,
+          framealpha=1.0, facecolor='white', edgecolor='black', title_fontsize='small')
 
 # Set final title
 #fig.suptitle('Ground Station Line-of-Sight Visibility\nLow Inclination LEO Constellation', fontsize=16, fontweight='bold')
 
+plt.savefig('figure-01.png', dpi=300, bbox_inches='tight')
 plt.show()
