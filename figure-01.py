@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import numpy as np
-from shapely.geometry import Point
-from matplotlib.patches import Circle
 from matplotlib.offsetbox import AnchoredText
 import matplotlib.ticker as mticker # Import mticker
 
@@ -62,12 +60,35 @@ ax.fill_between([-180, 180], [28, 28], [90, 90],
 
 # --- Add Node Coverage Footprint ---
 
-# Create a circular footprint on the PlateCarree projection
-node_circle = Circle((node_loc['lon'], node_loc['lat']), 25, # radius in degrees for simplicity
-                     facecolor='#9E9E9E', edgecolor='black', alpha=0.5)
-ax.add_patch(node_circle)
+# Geodetically accurate visibility footprint projected onto the equirectangular map.
+# Derived from line-of-sight geometry: h = 1,000 km altitude, epsilon = 10 deg elevation mask.
+# rho (nadir angle): sin(rho) = R_E * cos(eps) / (R_E + h)
+# eta (geocentric angular radius): eta = 90 deg - eps - rho
+R_E = 6371.0       # km, mean Earth radius
+h_sat = 1000.0     # km, satellite altitude
+elev_min = np.radians(10.0)  # minimum elevation angle
+rho = np.arcsin(R_E * np.cos(elev_min) / (R_E + h_sat))  # nadir angle
+eta = np.pi / 2.0 - elev_min - rho  # geocentric angular radius of coverage footprint
+
+lat0 = np.radians(node_loc['lat'])
+lon0 = np.radians(node_loc['lon'])
+azimuths = np.linspace(0, 2 * np.pi, 361)
+fp_lats_rad = np.arcsin(
+    np.sin(lat0) * np.cos(eta) + np.cos(lat0) * np.sin(eta) * np.cos(azimuths)
+)
+fp_lons_rad = lon0 + np.arctan2(
+    np.sin(azimuths) * np.sin(eta) * np.cos(lat0),
+    np.cos(eta) - np.sin(lat0) * np.sin(fp_lats_rad)
+)
+fp_lats = np.degrees(fp_lats_rad)
+fp_lons = np.degrees(fp_lons_rad)
+
+ax.fill(fp_lons, fp_lats,
+        facecolor='#9E9E9E', edgecolor='black', alpha=0.5,
+        transform=ccrs.PlateCarree())
 # Label for the node
-ax.text(node_loc['lon'] + 35, node_loc['lat'] + 2, '0° COLOMBIAN NODE\nCOVERAGE FOOTPRINT',
+ax.text(node_loc['lon'] + 27, node_loc['lat'] + 2,
+        'COLOMBIAN NODE\nCOVERAGE FOOTPRINT\n(h=1,000 km, \u03b5=10\u00b0)',
         fontsize=14, fontweight='bold', va='center', ha='left')
 
 
@@ -122,10 +143,10 @@ ax.text(180, 35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° IN
 ax.text(180, -35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
         fontsize=14, fontweight='bold', ha='right', va='bottom', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-120, -12, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
+ax.text(-155, 8, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
         fontsize=14, fontweight='bold', ha='center', va='bottom')
 
-ax.text(-80, -18, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
+ax.text(-60, -22, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
         fontsize=14, color='black', ha='center', va='bottom')
 ax.text(110, -3, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
         fontsize=14, color='black', ha='center', va='top')
@@ -136,9 +157,9 @@ ax.text(0, -85, 'POLAR NETWORKS:\nCONTINUOUS VISIBILITY FOR POLAR ORBITS,\nZERO 
 # Lon/Lat labels
 gl = ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False,
                   linestyle=':', color='black', linewidth=0.2)
-gl.top_labels = False
-gl.right_labels = True
-gl.xlabels_bottom = True
+gl.top_labels = True
+gl.right_labels = False
+gl.bottom_labels = False
 gl.ylabels_left = True
 gl.xlocator = mticker.FixedLocator([-180, -120, -60, -40, -30, 0, 30, 60, 90, 120, 150])
 gl.ylocator = mticker.FixedLocator([-90, -28, -10, 0, 10, 28, 30, 40, 90])
