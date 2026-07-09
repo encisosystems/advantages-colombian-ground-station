@@ -1,6 +1,6 @@
 import matplotlib
 matplotlib.rcParams.update({
-    'font.size': 14,
+    'font.size': 16,
     'font.family': 'sans-serif',
     'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
 })
@@ -36,7 +36,7 @@ plt.legend(fontsize=14)
 
 # Annotating maximums
 plt.annotate('Max 720 kHz', xy=(-250, 680), color='red')
-plt.annotate('Max 650 kHz', xy=(-250, 460), color='blue')
+plt.annotate('Max 650 kHz', xy=(-250, 380), color='blue')
 
 plt.tight_layout()
 plt.savefig('figure-04.png', dpi=300, bbox_inches='tight')

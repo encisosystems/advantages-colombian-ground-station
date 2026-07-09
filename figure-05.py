@@ -1,6 +1,6 @@
 import matplotlib
 matplotlib.rcParams.update({
-    'font.size': 14,
+    'font.size': 16,
     'font.family': 'sans-serif',
     'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
 })
