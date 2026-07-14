@@ -87,9 +87,9 @@ ax.fill(fp_lons, fp_lats,
         facecolor='#9E9E9E', edgecolor='black', alpha=0.5,
         transform=ccrs.PlateCarree())
 # Label for the node
-ax.text(node_loc['lon'] + 27, node_loc['lat'] + 2,
+ax.text(node_loc['lon'] + 27, 23,
         'COLOMBIAN NODE\nCOVERAGE FOOTPRINT\n(h=1,000 km, \u03b5=10\u00b0)',
-        fontsize=14, fontweight='bold', va='center', ha='left')
+        fontsize=14, fontweight='bold', va='bottom', ha='left')
 
 
 # --- Add Ground Tracks ---
@@ -140,10 +140,10 @@ ax.scatter(node_loc['lon'], node_loc['lat'], marker='x', s=150, color='red', lin
 # Text boxes on PlateCarree are easier to place by coordinates
 ax.text(180, 35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
         fontsize=14, fontweight='bold', ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
-ax.text(180, -35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
-        fontsize=14, fontweight='bold', ha='right', va='bottom', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+ax.text(50, -37, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
+        fontsize=14, fontweight='bold', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-155, 8, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
+ax.text(-155, 22, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
         fontsize=14, fontweight='bold', ha='center', va='bottom')
 
 ax.text(-60, -22, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
