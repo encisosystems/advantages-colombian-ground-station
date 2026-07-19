@@ -354,6 +354,15 @@ def _plot_figure(python_metrics, epsilon):
     x = np.arange(6)
 
     # ── Right panel: ε residuals ────────────────────────────────────────
+    # Compute the y-axis ceiling from actual ε values so that text labels
+    # placed at (ep + 0.004) always stay inside the axes.  Text objects have
+    # clip_on=False by default; if they sit outside the axes, bbox_inches='tight'
+    # expands the saved canvas to include them, causing enormous file dimensions.
+    _ep_valid = [epsilon[orb][mk] for (orb, mk) in metric_keys
+                 if epsilon[orb][mk] is not None]
+    y_lim_eps = (max(EPS_THRESHOLD * 1.7, max(_ep_valid) * 1.25)
+                 if _ep_valid else EPS_THRESHOLD * 1.7)
+
     for i, (orb, mk) in enumerate(metric_keys):
         ep = epsilon[orb][mk]
         if ep is not None:
@@ -373,7 +382,7 @@ def _plot_figure(python_metrics, epsilon):
     ax_eps.set_xticks(x)
     ax_eps.set_xticklabels(x_labels, fontsize=11)
     ax_eps.set_ylabel('Absolute Platform Discrepancy  ε (%)', fontsize=13)
-    ax_eps.set_ylim(0.0, EPS_THRESHOLD * 1.7)
+    ax_eps.set_ylim(0.0, y_lim_eps)
     ax_eps.legend(fontsize=12)
     ax_eps.grid(True, axis='y', linestyle=':', alpha=0.6, zorder=0)
     ax_eps.set_title('Platform Residuals', fontsize=13)
@@ -392,6 +401,11 @@ def _plot_figure(python_metrics, epsilon):
             for (orb, mk) in metric_keys
         ], dtype=float)
 
+        # Compute ylim half-width before drawing so TBD text stays inside axes
+        _gv_valid = gmat_vals[~np.isnan(gmat_vals)]
+        _gv_dev   = float(np.max(np.abs(_gv_valid - 1.0))) if len(_gv_valid) else 0.002
+        _half     = max(0.002, _gv_dev * 1.25)
+
         ax_cmp.bar(x - w / 2, py_vals, w,
                    label='Python / Skyfield', color='#2ca02c', alpha=0.85,
                    edgecolor='black', linewidth=0.5)
@@ -406,14 +420,14 @@ def _plot_figure(python_metrics, epsilon):
                 ax_cmp.bar(x[i] + w / 2, 1.0, w,
                            color='lightgray', hatch='//',
                            edgecolor='darkgray', linewidth=0.5)
-                ax_cmp.text(x[i] + w / 2, 1.001,
+                ax_cmp.text(x[i] + w / 2, 1.0 + _half * 0.05,
                             'TBD', ha='center', va='bottom', fontsize=9, color='gray')
 
         ax_cmp.axhline(1.0, color='black', linestyle=':', linewidth=0.8)
         ax_cmp.set_xticks(x)
         ax_cmp.set_xticklabels(x_labels, fontsize=11)
         ax_cmp.set_ylabel('Normalised Value  (Python = 1.0)', fontsize=13)
-        ax_cmp.set_ylim(0.998, 1.002)
+        ax_cmp.set_ylim(1.0 - _half, 1.0 + _half)
         ax_cmp.set_title('Python vs NASA GMAT', fontsize=13)
         ax_cmp.grid(True, axis='y', linestyle=':', alpha=0.6)
 
