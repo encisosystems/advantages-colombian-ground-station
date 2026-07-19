@@ -42,7 +42,7 @@ mesh = ax.pcolormesh(lon_grid, lat_grid, s4_data,
 
 # 4. Formatting and Labels
 cbar = plt.colorbar(mesh, orientation='vertical', pad=0.05, shrink=0.7)
-cbar.set_label('S4 Index (Amplitude Scintillation)')
+cbar.set_label('S4 index (amplitude scintillation)')
 
 #plt.title('S4 Index Distribution Map: Colombian Andes\nSimulated Solar Maximum Conditions',
 #          fontsize=14, pad=20)

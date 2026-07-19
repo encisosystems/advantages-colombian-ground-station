@@ -427,7 +427,7 @@ def _plot_figure(python_metrics, epsilon):
         for i, lbl in enumerate(ax_cmp.get_xticklabels()):
             lbl.set_color('#1f77b4' if i < 3 else '#d62728')
 
-    plt.tight_layout()
+    plt.subplots_adjust(bottom=0.18)
     outpath = os.path.join(_HERE, 'figure-06.png')
     plt.savefig(outpath, dpi=300, bbox_inches='tight')
     print(f'  Figure saved → figure-06.png')

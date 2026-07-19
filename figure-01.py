@@ -193,12 +193,12 @@ from matplotlib.lines import Line2D
 
 # Legend items based on visual similarity and text
 legend_elements = [
-    mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage Band (+28°)'),
-    mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar Station "Blind Spots"\n(No Visibility)'),
-    mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian Node Coverage'),
-    Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO Orbital Ground Track'),
-    Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar Ground Station'),
-    Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markeredgecolor='red', markersize=10, markeredgewidth=2, linestyle='none', label='Colombian Node')
+    mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (+28°)'),
+    mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(No visibility)'),
+    mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
+    Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
+    Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar ground station'),
+    Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markeredgecolor='red', markersize=10, markeredgewidth=2, linestyle='none', label='Colombian node')
 ]
 
 ax.legend(handles=legend_elements, loc='lower right', frameon=True, fontsize=14,

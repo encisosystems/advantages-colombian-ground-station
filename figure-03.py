@@ -24,8 +24,8 @@ andean_smooth = spl_andean(freq_smooth)
 # Plotting the chart
 plt.figure(figsize=(10, 6))
 
-plt.plot(freq_smooth, sea_smooth, color='firebrick', linewidth=2.5, label='Sea-level Node (0 m) - High Moisture/Rain')
-plt.plot(freq_smooth, andean_smooth, color='dodgerblue', linewidth=2.5, label='Andean Node (2,600 m) - Mitigated Attenuation')
+plt.plot(freq_smooth, sea_smooth, color='firebrick', linewidth=2.5, label='Sea-level node (0 m) - High moisture/rain')
+plt.plot(freq_smooth, andean_smooth, color='dodgerblue', linewidth=2.5, label='Andean node (2,600 m) - Mitigated attenuation')
 
 # Highlighting the exact data points from the paper
 plt.scatter(frequencies, sea_level_attenuation, color='firebrick', s=50, zorder=5)
@@ -39,8 +39,8 @@ plt.annotate('19.5 dB', xy=(30.0, 19.5), xytext=(31, 16),
 
 # Formatting the chart
 #plt.title('Ka-Band Attenuation Profiles (20-40 GHz)', fontsize=14, fontweight='bold', pad=15)
-plt.xlabel('Transmit Frequency (GHz)', fontsize=14)
-plt.ylabel('Total Atmospheric Attenuation ($L_{atm}$) in dB', fontsize=14)
+plt.xlabel('Transmit frequency (GHz)', fontsize=14)
+plt.ylabel('Total atmospheric attenuation ($L_{atm}$) in dB', fontsize=14)
 plt.xlim(20, 40)
 plt.ylim(0, 60)
 plt.grid(True, linestyle='--', alpha=0.7)
