@@ -60,22 +60,32 @@ make install
 Generate all figures at once:
 
 ```bash
-make figures        # or: python run_all.py
+make                # default target (same as: make all)
+make all            # build all figures
+make figures        # run all figure scripts via run_all.py
 ```
 
 Generate individual figures:
 
 ```bash
-make figure-01      # Ground track map
-make figure-02      # Contact time vs. inclination
-make figure-03      # Ka-band attenuation profiles
-make figure-04      # Doppler shift curves
-make figure-05      # S4 scintillation index map
-make figure-06      # Cross-platform validation (Python vs. GMAT)
-make simulation     # Core simulation output
+make figure-01      # Ground station visibility map
+make figure-02      # Pass duration vs elevation mask
+make figure-03      # Ka-band atmospheric attenuation
+make figure-04      # Doppler shift profile
+make figure-05      # Coverage map
+make figure-06      # Cross-platform validation
+make simulation     # First-pass tracking geometry
+make help           # Show all targets and usage
 ```
 
-Each script saves a 300 dpi PNG (`figure-0N.png`) in the repository root. Remove all generated PNGs with `make clean`.
+Output format is controlled by `FMT` (`png` by default):
+
+```bash
+make figures FMT=svg
+make figure-06 FMT=eps
+```
+
+Each script saves a 300 dpi file in the selected format (e.g. `figure-0N.png`, `figure-0N.svg`, or `figure-0N.eps`) in the repository root. Remove all generated figure files with `make clean`.
 
 ---
 
