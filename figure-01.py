@@ -1,3 +1,4 @@
+import os
 import matplotlib
 matplotlib.rcParams.update({
     'font.size': 16,
@@ -194,7 +195,7 @@ from matplotlib.lines import Line2D
 # Legend items based on visual similarity and text
 legend_elements = [
     mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (+28°)'),
-    mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(No visibility)'),
+    mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(no visibility)'),
     mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
     Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
     Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar ground station'),
@@ -207,5 +208,6 @@ ax.legend(handles=legend_elements, loc='lower right', frameon=True, fontsize=14,
 # Set final title
 #fig.suptitle('Ground Station Line-of-Sight Visibility\nLow Inclination LEO Constellation', fontsize=16, fontweight='bold')
 
-plt.savefig('figure-01.png', dpi=300, bbox_inches='tight')
+_fmt = os.environ.get('FIGURE_FORMAT', 'png')
+plt.savefig(f'figure-01.{_fmt}', dpi=300, bbox_inches='tight')
 plt.show()

@@ -1,3 +1,4 @@
+import os
 import matplotlib
 matplotlib.rcParams.update({
     'font.size': 16,
@@ -24,8 +25,8 @@ andean_smooth = spl_andean(freq_smooth)
 # Plotting the chart
 plt.figure(figsize=(10, 6))
 
-plt.plot(freq_smooth, sea_smooth, color='firebrick', linewidth=2.5, label='Sea-level node (0 m) - High moisture/rain')
-plt.plot(freq_smooth, andean_smooth, color='dodgerblue', linewidth=2.5, label='Andean node (2,600 m) - Mitigated attenuation')
+plt.plot(freq_smooth, sea_smooth, color='firebrick', linewidth=2.5, label='Sea-level node (0 m)')
+plt.plot(freq_smooth, andean_smooth, color='dodgerblue', linewidth=2.5, label='Andean node (2,600 m)')
 
 # Highlighting the exact data points from the paper
 plt.scatter(frequencies, sea_level_attenuation, color='firebrick', s=50, zorder=5)
@@ -40,7 +41,7 @@ plt.annotate('19.5 dB', xy=(30.0, 19.5), xytext=(31, 16),
 # Formatting the chart
 #plt.title('Ka-Band Attenuation Profiles (20-40 GHz)', fontsize=14, fontweight='bold', pad=15)
 plt.xlabel('Transmit frequency (GHz)', fontsize=14)
-plt.ylabel('Total atmospheric attenuation ($L_{atm}$) in dB', fontsize=14)
+plt.ylabel('Total atmospheric attenuation ($\\mathrm{L_{atm}}$) in dB', fontsize=14)
 plt.xlim(20, 40)
 plt.ylim(0, 60)
 plt.grid(True, linestyle='--', alpha=0.7)
@@ -48,5 +49,6 @@ plt.legend(loc='upper left', fontsize=14, frameon=True, shadow=True)
 
 # Save the plot as a high-resolution image suitable for a document
 plt.tight_layout()
-plt.savefig('figure-03.png', dpi=300, bbox_inches='tight')
+_fmt = os.environ.get('FIGURE_FORMAT', 'png')
+plt.savefig(f'figure-03.{_fmt}', dpi=300, bbox_inches='tight')
 plt.show()

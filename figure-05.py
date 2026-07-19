@@ -1,3 +1,4 @@
+import os
 import matplotlib
 matplotlib.rcParams.update({
     'font.size': 16,
@@ -51,5 +52,6 @@ gl = ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
 gl.top_labels = False
 gl.right_labels = False
 
-plt.savefig('figure-05.png', dpi=300, bbox_inches='tight')
+_fmt = os.environ.get('FIGURE_FORMAT', 'png')
+plt.savefig(f'figure-05.{_fmt}', dpi=300, bbox_inches='tight')
 plt.show()

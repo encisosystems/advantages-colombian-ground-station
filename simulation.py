@@ -106,8 +106,9 @@ for ax, (label, res), color in zip(axes, results.items(), COLORS):
 
 plt.suptitle(
     'Tracking Geometry: First Visible Pass — Paipa GS (5.78°N, 73.12°W, 2 600 m)',
-    fontsize=13, y=1.01
+    fontsize=13, y=0.98
 )
-plt.tight_layout()
-plt.savefig('simulation.png', dpi=300, bbox_inches='tight')
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+_fmt = os.environ.get('FIGURE_FORMAT', 'png')
+plt.savefig(f'simulation.{_fmt}', dpi=300, bbox_inches='tight')
 plt.show()
