@@ -28,7 +28,7 @@ plt.plot(t, equatorial_shift, label='Equatorial node (0°)',
 
 # Formatting the plot
 #plt.title('Doppler Shift Complexity (30 GHz Ka-Band Downlink)', fontsize=14)
-plt.xlabel('Time relative to maximum elevation (seconds)', fontsize=14)
+plt.xlabel('Time relative to maximum elevation (s)', fontsize=14)
 plt.ylabel('Doppler frequency shift (kHz)', fontsize=14)
 plt.axhline(0, color='black', linewidth=0.5)
 plt.axvline(0, color='black', linewidth=0.5)

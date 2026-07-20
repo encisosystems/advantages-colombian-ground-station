@@ -25,14 +25,14 @@ y_aug = np.array([97.5, 97.5, 97.5, 97.5, 82, 70, 78, 100, 112, 125])
 plt.figure(figsize=(8, 5))
 
 # Plot direct line segments with markers — no interpolation
-plt.plot(x, y_base, label='Baseline (polar-only)', color='blue', linestyle='--',
+plt.plot(x, y_base, label='Baseline (Polar-only)', color='blue', linestyle='--',
          linewidth=2, marker='o', markersize=6, zorder=5)
-plt.plot(x, y_aug, label='Augmented (polar + Colombia)', color='green',
+plt.plot(x, y_aug, label='Augmented (Polar + Colombia)', color='green',
          linewidth=2, marker='o', markersize=6, zorder=5)
 
 # Format the chart (Axes, limits, legend, and grid)
 plt.xlabel('Orbital inclination (°)')
-plt.ylabel('Daily contact time (minutes)')
+plt.ylabel('Daily contact time (min)')
 plt.xlim(0, 90)
 plt.ylim(0, 140)
 plt.xticks(x)
