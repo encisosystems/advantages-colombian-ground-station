@@ -48,15 +48,15 @@ ax.set_extent([-180, 180, -90, 90], crs=ccrs.PlateCarree())
 # LEO Coverage Band (+28°)
 ax.fill_between([-180, 180], [-28, -28], [28, 28],
                 color='#B2E0F7', alpha=0.5,
-                edgecolor='none', label='LEO Coverage Band')
+                edgecolor='none', label='LEO coverage band')
 
 # Polar Station Blind Spots (Outside coverage band)
 ax.fill_between([-180, 180], [-90, -90], [-28, -28],
                 color='#C0C0C0', alpha=0.3,
-                edgecolor='none', label='Polar Blind Spot')
+                edgecolor='none', label='Polar blind spot')
 ax.fill_between([-180, 180], [28, 28], [90, 90],
                 color='#C0C0C0', alpha=0.3,
-                edgecolor='none', label='Polar Blind Spot')
+                edgecolor='none', label='Polar blind spot')
 
 
 # --- Add Node Coverage Footprint ---
@@ -88,14 +88,14 @@ ax.fill(fp_lons, fp_lats,
         facecolor='#9E9E9E', edgecolor='black', alpha=0.5,
         transform=ccrs.PlateCarree())
 # Label for the node
-ax.text(node_loc['lon'] + 27, 23,
-        'COLOMBIAN NODE\nCOVERAGE FOOTPRINT\n(h=1,000 km, \u03b5=10\u00b0)',
-        fontsize=14, fontweight='bold', va='bottom', ha='left')
+ax.text(node_loc['lon'], 45,
+        'Colombian node\ncoverage footprint\n(h=1,000 km, \u03b5=10\u00b0)',
+        fontsize=14, fontweight='bold', va='top', ha='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 
 # --- Add Ground Tracks ---
 track_lons, track_lats = generate_ground_track(28)
-ax.plot(track_lons, track_lats, 'k--', linewidth=1, label='Typical Ground Track')
+ax.plot(track_lons, track_lats, 'k--', linewidth=1, label='Typical ground track')
 
 # Mark a node on the ground track (e.g., node near 0 lon)
 # Find the index closest to 0 longitude
@@ -114,20 +114,20 @@ station_icon = dict(marker='s', s=100, color='#3182CE', edgecolor='black', zorde
 
 # Create station markers
 for name, data in station_data.items():
-    ax.scatter(data['lon'], data['lat'], **station_icon, label='Polar Ground Station')
+        ax.scatter(data['lon'], data['lat'], **station_icon, label='Polar ground station')
 
-    # Place Red Cross BELOW the antenna
-    # Offset by a constant number of degrees latitude
-    cross_lat = data['lat'] - 4.0 # Adjust dy to place it clearly below
+        # Place Red Cross BELOW the antenna
+        # Offset by a constant number of degrees latitude
+        cross_lat = data['lat'] - 4.0 # Adjust dy to place it clearly below
 
-    # Plot large, bold red cross
-    #ax.scatter(data['lon'], cross_lat, marker='x', s=250, color='red', linewidth=3, zorder=11, label='No Signal')
+        # Plot large, bold red cross
+        #ax.scatter(data['lon'], cross_lat, marker='x', s=250, color='red', linewidth=3, zorder=11, label='No Signal')
 
-    # Add text label (e.g., station name) with offset
-    # Text is anchored to the station icon, not the cross
-    text_x, text_y = data['text_offset']
-    ax.text(data['lon'] + text_x, data['lat'] + text_y, f"{name.upper()} ({int(abs(data['lat']))}°{ 'N)' if data['lat'] >= 0 else 'S)'}",
-            fontsize=14, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12)
+        # Add text label (e.g., station name) with offset
+        # Text is anchored to the station icon, not the cross
+        text_x, text_y = data['text_offset']
+        ax.text(data['lon'] + text_x, data['lat'] + text_y, f"{name} ({int(abs(data['lat']))}°{ 'N)' if data['lat'] >= 0 else 'S)'}",
+                        fontsize=14, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12)
 
 # Add a specific Colombian Node mark
 # The original node footprint center has a red X which is inside.
@@ -139,20 +139,22 @@ ax.scatter(node_loc['lon'], node_loc['lat'], marker='x', s=150, color='red', lin
 
 # Title text boxes
 # Text boxes on PlateCarree are easier to place by coordinates
-ax.text(180, 35, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
+ax.text(170, 45, 'Polar ground station "blind spots"\n(No visibility for 28° inclination LEO)',
         fontsize=14, fontweight='bold', ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
-ax.text(50, -37, 'POLAR GROUND STATION "BLIND SPOTS"\n(NO VISIBILITY FOR 28° INCLINATION LEO)',
+
+ax.text(50, -37, 'Polar ground station "blind spots"\n(No visibility for 28° inclination LEO)',
         fontsize=14, fontweight='bold', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-155, 22, 'LEO CONSTELLATION\nCOVERAGE BAND\n(+28° INCLINATION)',
-        fontsize=14, fontweight='bold', ha='center', va='bottom')
+ax.text(-155, 22, 'LEO constellation\ncoverage band\n(+28° inclination)',
+        fontsize=14, fontweight='bold', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-60, -22, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
-        fontsize=14, color='black', ha='center', va='bottom')
-ax.text(110, -3, 'TYPICAL SATELLITE\nGROUND TRACK\n(28° INCLINATION)',
-        fontsize=14, color='black', ha='center', va='top')
+ax.text(-120, 0, 'Typical satellite\nground track\n(28° inclination)',
+        fontsize=14, fontweight='bold', color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(0, -85, 'POLAR NETWORKS:\nCONTINUOUS VISIBILITY FOR POLAR ORBITS,\nZERO VISIBILITY FOR LOW INCLINATION LEO',
+ax.text(80, 0, 'Typical satellite\nground track\n(28° inclination)',
+        fontsize=14, fontweight='bold', color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+
+ax.text(-50, -75, 'Polar networks:\nContinuous visibility for polar orbits,\nzero visibility for low inclination LEO',
         fontsize=14, fontweight='bold', ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 # Lon/Lat labels
@@ -182,7 +184,7 @@ inset_ax.fill_between(np.linspace(-180, 180, 100), -28, 28,
              color='#B2E0F7', alpha=0.7, transform=ccrs.PlateCarree())
 inset_ax.gridlines(linestyle=':', linewidth=0.2) # Corrected line
 # Text for inset
-inset_ax.text(0.5, -0.1, '3D ORBITAL PLANE\n(SIDE VIEW)', transform=inset_ax.transAxes,
+inset_ax.text(0.5, -0.1, '3D orbital plane\n(Side view)', transform=inset_ax.transAxes,
               fontsize=14, fontweight='bold', ha='center', va='top')
 
 
@@ -194,12 +196,12 @@ from matplotlib.lines import Line2D
 
 # Legend items based on visual similarity and text
 legend_elements = [
-    mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (+28°)'),
-    mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(no visibility)'),
-    mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
-    Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
-    Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar ground station'),
-    Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markeredgecolor='red', markersize=10, markeredgewidth=2, linestyle='none', label='Colombian node')
+        mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (+28°)'),
+        mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(No visibility)'),
+        mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
+        Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
+        Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar ground station'),
+        Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markeredgecolor='red', markersize=10, markeredgewidth=2, linestyle='none', label='Colombian node')
 ]
 
 ax.legend(handles=legend_elements, loc='lower right', frameon=True, fontsize=14,
