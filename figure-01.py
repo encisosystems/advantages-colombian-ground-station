@@ -90,7 +90,7 @@ ax.fill(fp_lons, fp_lats,
 # Label for the node
 ax.text(node_loc['lon'], 45,
         'Colombian node\ncoverage footprint\n(h=1,000 km, \u03b5=10\u00b0)',
-        fontsize=14, fontweight='bold', va='top', ha='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, va='top', ha='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 
 # --- Add Ground Tracks ---
@@ -127,7 +127,7 @@ for name, data in station_data.items():
         # Text is anchored to the station icon, not the cross
         text_x, text_y = data['text_offset']
         ax.text(data['lon'] + text_x, data['lat'] + text_y, f"{name} ({int(abs(data['lat']))}°{ 'N)' if data['lat'] >= 0 else 'S)'}",
-                        fontsize=14, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12)
+                        fontsize=14, color='black', ha='left', va='bottom' if text_y > 0 else 'top', zorder=12, bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 # Add a specific Colombian Node mark
 # The original node footprint center has a red X which is inside.
@@ -140,22 +140,22 @@ ax.scatter(node_loc['lon'], node_loc['lat'], marker='x', s=150, color='red', lin
 # Title text boxes
 # Text boxes on PlateCarree are easier to place by coordinates
 ax.text(170, 45, 'Polar ground station "blind spots"\n(No visibility for 28° inclination LEO)',
-        fontsize=14, fontweight='bold', ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, ha='right', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(50, -37, 'Polar ground station "blind spots"\n(No visibility for 28° inclination LEO)',
-        fontsize=14, fontweight='bold', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(-155, 22, 'LEO constellation\ncoverage band\n(+28° inclination)',
-        fontsize=14, fontweight='bold', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(-120, 0, 'Typical satellite\nground track\n(28° inclination)',
-        fontsize=14, fontweight='bold', color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(80, 0, 'Typical satellite\nground track\n(28° inclination)',
-        fontsize=14, fontweight='bold', color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(-50, -75, 'Polar networks:\nContinuous visibility for polar orbits,\nzero visibility for low inclination LEO',
-        fontsize=14, fontweight='bold', ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
+        fontsize=14, ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 # Lon/Lat labels
 gl = ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False,
