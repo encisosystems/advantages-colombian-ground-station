@@ -145,7 +145,7 @@ ax.text(170, 45, 'Polar ground station "blind spots"\n(No visibility for 28° in
 ax.text(50, -37, 'Polar ground station "blind spots"\n(No visibility for 28° inclination LEO)',
         fontsize=14, ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-155, 22, 'LEO constellation\ncoverage band\n(+28° inclination)',
+ax.text(-155, 22, 'LEO constellation\ncoverage band\n(28° inclination)',
         fontsize=14, ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 ax.text(-120, 0, 'Typical satellite\nground track\n(28° inclination)',
@@ -185,7 +185,7 @@ inset_ax.fill_between(np.linspace(-180, 180, 100), -28, 28,
 inset_ax.gridlines(linestyle=':', linewidth=0.2) # Corrected line
 # Text for inset
 inset_ax.text(0.5, -0.1, '3D orbital plane\n(Side view)', transform=inset_ax.transAxes,
-              fontsize=14, fontweight='bold', ha='center', va='top')
+              fontsize=14, ha='center', va='top')
 
 
 # --- Add Legend ---
@@ -196,7 +196,7 @@ from matplotlib.lines import Line2D
 
 # Legend items based on visual similarity and text
 legend_elements = [
-        mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (+28°)'),
+        mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (28°)'),
         mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(No visibility)'),
         mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
         Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
