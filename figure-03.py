@@ -41,7 +41,7 @@ plt.annotate('19.5 dB', xy=(30.0, 19.5), xytext=(31, 16),
 # Formatting the chart
 #plt.title('Ka-Band Attenuation Profiles (20-40 GHz)', fontsize=14, fontweight='bold', pad=15)
 plt.xlabel('Transmit frequency (GHz)', fontsize=14)
-plt.ylabel('Total atmospheric attenuation ($\\mathrm{L_{atm}}$) in dB', fontsize=14)
+plt.ylabel('Total atmospheric attenuation (dB)', fontsize=14)
 plt.xlim(20, 40)
 plt.ylim(0, 60)
 plt.grid(True, linestyle='--', alpha=0.7)
