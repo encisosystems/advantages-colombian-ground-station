@@ -154,7 +154,7 @@ ax.text(-120, 0, 'Typical satellite\nground track\n(28° inclination)',
 ax.text(80, 0, 'Typical satellite\nground track\n(28° inclination)',
         fontsize=14, color='black', ha='center', va='top', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
-ax.text(-50, -75, 'Polar networks:\nContinuous visibility for polar orbits,\nzero visibility for low inclination LEO',
+ax.text(-50, -75, 'Polar networks:\nContinuous visibility for polar orbits,\nzero visibility for low-inclination LEO',
         fontsize=14, ha='center', va='center', bbox=dict(boxstyle="square", fc="white", ec="black", lw=0.5))
 
 # Lon/Lat labels
@@ -197,7 +197,7 @@ from matplotlib.lines import Line2D
 # Legend items based on visual similarity and text
 legend_elements = [
         mpatches.Patch(facecolor='#B2E0F7', edgecolor='none', alpha=0.5, label='Coverage band (28°)'),
-        mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar station "blind spots"\n(No visibility)'),
+        mpatches.Patch(facecolor='#C0C0C0', edgecolor='none', alpha=0.3, label='Polar ground station \n"blind spots" (No visibility)'),
         mpatches.Patch(facecolor='#9E9E9E', edgecolor='black', alpha=0.5, label='Colombian node coverage'),
         Line2D([0], [0], color='black', linestyle='--', linewidth=1, label='LEO orbital ground track'),
         Line2D([0], [0], marker='s', color='#3182CE', markerfacecolor='#3182CE', markeredgecolor='black', markersize=8, linestyle='none', label='Polar ground station'),
