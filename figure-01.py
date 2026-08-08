@@ -164,7 +164,7 @@ gl.top_labels = True
 gl.right_labels = False
 gl.bottom_labels = False
 gl.ylabels_left = True
-gl.xlocator = mticker.FixedLocator([-180, -120, -60, -40, -30, 0, 30, 60, 90, 120, 150])
+gl.xlocator = mticker.FixedLocator(np.arange(-180, 181, 60))
 gl.ylocator = mticker.FixedLocator([-90, -28, -10, 0, 10, 28, 30, 40, 90])
 # Set explicit labels for consistency with image
 gl.xformatter = mticker.FuncFormatter(lambda x, p: f"{int(abs(x))}°{ 'W' if x < 0 else 'E'}" if x !=0 else "0°")
