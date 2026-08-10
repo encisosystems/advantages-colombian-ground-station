@@ -24,6 +24,10 @@ TLE_FILES = {
     'SSO — LANDSAT 8':         'tle_sso.txt',
 }
 
+BASELINE_LATENCY_MIN = 100.0
+LATENCY_FLOOR_MIN = 54.2
+CONTACT_SCALE_MIN = 600.0
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Orbital visibility simulation with optional Monte Carlo analysis.')
@@ -64,7 +68,9 @@ def run_deterministic_simulation(satellites, ground_station, t, min_elevation):
     return results
 
 
-def compute_latency_proxy(contact_minutes, baseline_latency_minutes=100.0, target_latency_minutes=54.2, contact_scale_minutes=600.0):
+def compute_latency_proxy(contact_minutes, baseline_latency_minutes=BASELINE_LATENCY_MIN,
+                          target_latency_minutes=LATENCY_FLOOR_MIN,
+                          contact_scale_minutes=CONTACT_SCALE_MIN):
     """Return a simple latency proxy from contact minutes using a linear reduction model."""
     contact_ratio = np.clip(contact_minutes / float(contact_scale_minutes), 0.0, 1.0)
     reduction_fraction = (baseline_latency_minutes - target_latency_minutes) / baseline_latency_minutes
@@ -88,6 +94,7 @@ def run_monte_carlo_simulation(satellites, ground_station, t, min_elevation, tri
     summary = {}
     for label, values in contact_histories.items():
         values_array = np.asarray(values, dtype=float)
+        contact_ratios = np.clip(values_array / CONTACT_SCALE_MIN, 0.0, 1.0)
         latency_values = np.array([
             compute_latency_proxy(contact_minutes=contact_min)
             for contact_min in values_array
@@ -100,7 +107,8 @@ def run_monte_carlo_simulation(satellites, ground_station, t, min_elevation, tri
             'ci_high': float(np.percentile(values_array, 97.5)),
             'latency_mean': float(latency_values.mean()),
             'latency_p95': float(np.percentile(latency_values, 95.0)),
-            'latency_reduction_pct': float((100.0 - latency_values.mean()) / 100.0 * 100.0),
+            'latency_reduction_pct': float((BASELINE_LATENCY_MIN - latency_values.mean()) / BASELINE_LATENCY_MIN * 100.0),
+            'saturation_fraction': float(np.mean(contact_ratios >= 1.0)),
         }
 
     return summary
@@ -162,7 +170,7 @@ def plot_monte_carlo_summary(summary):
     values = [summary[label]['values'] for label in labels]
     positions = np.arange(len(labels))
 
-    bp = ax.boxplot(values, patch_artist=True, vert=True)
+    bp = ax.boxplot(values, patch_artist=True, orientation='vertical')
     for box in bp['boxes']:
         box.set(facecolor='#4c78a8', alpha=0.7)
     for whisker in bp['whiskers']:
@@ -218,6 +226,8 @@ if __name__ == '__main__':
     if args.mc_trials > 1:
         print(f"\nMonte Carlo summary ({args.mc_trials} trials, seed={args.mc_seed})")
         print('-' * 74)
+        print(f"  Note: latency is a proxy model, not physical end-to-end network latency.")
+        print(f"        Baseline={BASELINE_LATENCY_MIN:.1f} min, floor={LATENCY_FLOOR_MIN:.1f} min, contact scale={CONTACT_SCALE_MIN:.1f} min.")
         mc_summary = run_monte_carlo_simulation(
             satellites,
             colombia_gs,
@@ -228,10 +238,15 @@ if __name__ == '__main__':
             args.phase_range_hours,
         )
         for label, summary in mc_summary.items():
+            saturation_pct = 100.0 * summary['saturation_fraction']
             print(
                 f"  {label:<24}  mean={summary['mean']:>8.1f}  std={summary['std']:>7.1f}  "
                 f"95% CI [{summary['ci_low']:>6.1f}, {summary['ci_high']:>6.1f}]  "
-                f"latency≈{summary['latency_mean']:>5.1f} min (p95 {summary['latency_p95']:>5.1f}, "
-                f"reduction {summary['latency_reduction_pct']:>4.1f}%)"
+                f"proxy latency≈{summary['latency_mean']:>5.1f} min (p95 {summary['latency_p95']:>5.1f}, "
+                f"reduction {summary['latency_reduction_pct']:>4.1f}%, saturation {saturation_pct:>5.1f}%)"
             )
+
+        if any(summary['saturation_fraction'] > 0.0 for summary in mc_summary.values()):
+            print("  Warning: saturation > 0% means some trials hit the proxy latency floor;")
+            print("           those cases cannot improve below that floor in this simplified mapping.")
         plot_monte_carlo_summary(mc_summary)
